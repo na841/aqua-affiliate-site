@@ -119,10 +119,11 @@ def main():
         system, user = build_prompt(config, products, kw)
         try:
             result = call_claude(system, user)
-        except Exception as e:
+      except Exception as e:
+            import traceback
             print(f"[ERROR] keyword='{kw}' の生成に失敗しました: {e}", file=sys.stderr)
+            traceback.print_exc()
             continue
-
         slug = slugify(kw)
         entry = {
             "slug": slug,
