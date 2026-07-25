@@ -13,6 +13,7 @@ import json
 import os
 import re
 import sys
+import traceback
 import datetime
 from pathlib import Path
 
@@ -38,7 +39,6 @@ def save_json(path, data):
 
 
 def slugify(text: str) -> str:
-    # 日本語キーワードは日付+連番でslug化する（URLに日本語を含めない）
     today = datetime.date.today().isoformat()
     return f"{today}-{abs(hash(text)) % 10000}"
 
@@ -47,7 +47,6 @@ def pick_next_keywords(config, manifest, n):
     used = set(manifest.get("used_keywords", []))
     remaining = [k for k in config["keywords"] if k not in used]
     if not remaining:
-        # 全部使い切ったら最初からループする
         remaining = config["keywords"]
     return remaining[:n]
 
@@ -83,14 +82,14 @@ def build_prompt(config, products, keyword):
   "used_product_ids": ["紹介に使ったproducts.jsonのid。使わなければ空配列"]
 }}
 
-body_html内で商品を紹介する場合は、次のクラスのdivを使ってください（ASINと{{amazon_tag}}はそのまま文字列で埋め込んでよい。ビルドスクリプト側では置換しません。手動で products.json の asin を使ってURLを組み立ててください）:
+body_html内で商品を紹介する場合は、次のクラスのdivを使ってください:
 <div class="product-box"><strong>商品名</strong><br>特徴の説明<br><span class="price">想定価格</span><br><a class="affiliate-btn" href="https://www.amazon.co.jp/dp/ASIN?tag={tag}" rel="nofollow sponsored" target="_blank">Amazonで見る</a></div>
 """
     return system, user
 
 
 def call_claude(system, user):
-    client = anthropic.Anthropic()  # ANTHROPIC_API_KEY を環境変数から自動取得
+    client = anthropic.Anthropic()
     resp = client.messages.create(
         model="claude-sonnet-4-6",
         max_tokens=2000,
@@ -98,7 +97,6 @@ def call_claude(system, user):
         messages=[{"role": "user", "content": user}],
     )
     text = "".join(block.text for block in resp.content if block.type == "text")
-    # モデルがコードフェンスで返した場合に備えて除去
     text = re.sub(r"^```json\s*|\s*```$", "", text.strip())
     return json.loads(text)
 
@@ -119,11 +117,11 @@ def main():
         system, user = build_prompt(config, products, kw)
         try:
             result = call_claude(system, user)
-      except Exception as e:
-            import traceback
+        except Exception as e:
             print(f"[ERROR] keyword='{kw}' の生成に失敗しました: {e}", file=sys.stderr)
             traceback.print_exc()
             continue
+
         slug = slugify(kw)
         entry = {
             "slug": slug,
