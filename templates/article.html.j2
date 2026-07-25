@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title }} | {{ site_name }}</title>
+<meta name="description" content="{{ summary }}">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site-header">
+  <p class="site-desc"><a href="../index.html" style="color:inherit;">← {{ site_name }} トップへ</a></p>
+</header>
+<main>
+  <article class="post">
+    <h1>{{ title }}</h1>
+    <p class="article-meta">{{ date }} 更新</p>
+    {{ body_html }}
+
+    <p class="disclosure">
+      本ページはアフィリエイトプログラムにより収益を得ています。商品紹介にはAmazon.co.jp等のアフィリエイトリンクを含みます。
+      本コンテンツはAIによる生成を含みます。
+    </p>
+  </article>
+</main>
+<footer>&copy; {{ site_name }}</footer>
+</body>
+</html>
