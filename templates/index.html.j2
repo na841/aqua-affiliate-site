@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ site_name }}</title>
+<meta name="description" content="{{ site_description }}">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <h1 class="site-title">{{ site_name }}</h1>
+  <p class="site-desc">{{ site_description }}</p>
+</header>
+<main>
+  <div class="article-grid">
+    {% for a in articles %}
+    <div class="article-card">
+      <a href="articles/{{ a.slug }}.html">{{ a.title }}</a>
+      <div class="article-meta">{{ a.date }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</main>
+<footer>&copy; {{ site_name }} / 本サイトはアフィリエイト広告を含みます</footer>
+</body>
+</html>
