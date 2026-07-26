@@ -13,6 +13,14 @@
   <p class="site-desc">{{ site_description }}</p>
 </header>
 <main>
+  <div class="author-card">
+    <div class="author-emoji">{{ author_emoji }}</div>
+    <div>
+      <p class="author-name">{{ author_name }}</p>
+      <p class="author-bio">{{ author_bio }}</p>
+    </div>
+  </div>
+
   <div class="article-grid">
     {% for a in articles %}
     <div class="article-card">
