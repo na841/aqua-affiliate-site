@@ -22,6 +22,9 @@ DOCS_ARTICLES_DIR = DOCS_DIR / "articles"
 
 def main():
     config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+    author_name = config.get("author_name", "編集部")
+    author_emoji = config.get("author_emoji", "📝")
+    author_bio = config.get("author_bio", "")
 
     DOCS_DIR.mkdir(exist_ok=True)
     DOCS_ARTICLES_DIR.mkdir(exist_ok=True)
@@ -42,6 +45,9 @@ def main():
             date=entry["date"],
             body_html=entry["body_html"],
             site_name=config["site_name"],
+            author_name=author_name,
+            author_emoji=author_emoji,
+            author_bio=author_bio,
         )
         (DOCS_ARTICLES_DIR / f"{entry['slug']}.html").write_text(html, encoding="utf-8")
 
@@ -49,6 +55,9 @@ def main():
         site_name=config["site_name"],
         site_description=config["site_description"],
         articles=articles,
+        author_name=author_name,
+        author_emoji=author_emoji,
+        author_bio=author_bio,
     )
     (DOCS_DIR / "index.html").write_text(index_html, encoding="utf-8")
 
