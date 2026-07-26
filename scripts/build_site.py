@@ -51,6 +51,8 @@ def main():
         )
         (DOCS_ARTICLES_DIR / f"{entry['slug']}.html").write_text(html, encoding="utf-8")
 
+    last_updated = max((a["date"] for a in articles), default="")
+
     index_html = index_tpl.render(
         site_name=config["site_name"],
         site_description=config["site_description"],
@@ -58,6 +60,7 @@ def main():
         author_name=author_name,
         author_emoji=author_emoji,
         author_bio=author_bio,
+        last_updated=last_updated,
     )
     (DOCS_DIR / "index.html").write_text(index_html, encoding="utf-8")
 
