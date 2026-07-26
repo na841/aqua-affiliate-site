@@ -6,7 +6,7 @@
   --accent-2: #2f7a63;
   --line: #e6dac4;
   --card-bg: #ffffff;
-  --serif: "Shippori Mincho", "Noto Serif JP", serif;
+  --serif: "Klee One", "Zen Old Mincho", serif;
   --sans: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
 }
 
@@ -28,8 +28,9 @@ header.site-header {
 
 .site-title {
   font-family: var(--serif);
-  font-size: clamp(28px, 5vw, 42px);
-  letter-spacing: 0.04em;
+  font-weight: 400;
+  font-size: clamp(28px, 5vw, 44px);
+  letter-spacing: 0.02em;
   margin: 0 0 8px;
   color: var(--accent-2);
 }
@@ -64,8 +65,8 @@ main {
 
 .author-name {
   font-family: var(--serif);
-  font-weight: bold;
-  font-size: 16px;
+  font-weight: 400;
+  font-size: 17px;
   margin: 0 0 4px;
   color: var(--accent-2);
 }
@@ -95,7 +96,7 @@ main {
   color: var(--ink);
   text-decoration: none;
   font-family: var(--serif);
-  font-size: 20px;
+  font-size: 21px;
 }
 
 .article-meta {
@@ -106,12 +107,14 @@ main {
 
 article.post h1 {
   font-family: var(--serif);
-  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 400;
+  font-size: clamp(26px, 4vw, 38px);
   line-height: 1.5;
 }
 
 article.post h2 {
   font-family: var(--serif);
+  font-weight: 400;
   border-left: 4px solid var(--accent);
   padding-left: 12px;
   margin-top: 48px;
@@ -153,11 +156,11 @@ article.post h2 {
 }
 
 .disclosure {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--ink-soft);
-  border-top: 1px dashed var(--line);
+  opacity: 0.75;
   margin-top: 24px;
-  padding-top: 16px;
+  padding-top: 12px;
 }
 
 footer {
