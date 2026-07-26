@@ -53,6 +53,9 @@ def pick_next_keywords(config, manifest, n):
 
 def build_prompt(config, products, keyword):
     tag = config.get("amazon_associate_tag", "")
+    author_name = config.get("author_name", "編集部")
+    author_bio = config.get("author_bio", "")
+
     product_lines = []
     for p in products.get("products", []):
         product_lines.append(
@@ -61,13 +64,16 @@ def build_prompt(config, products, keyword):
     product_block = "\n".join(product_lines) if product_lines else "（登録商品なし。一般的な商品カテゴリの説明のみ行うこと）"
 
     system = (
-        "あなたは日本語のアフィリエイトブログのライターです。"
+        f"あなたは「{author_name}」という個人ブロガーです。プロフィール：{author_bio}"
         f"サイトのテーマは「{config['niche']}」です。"
-        "誇大な効能・断定的な医療/安全性の主張は避け、事実ベースで正直なレビュー記事を書きます。"
+        "一人称（私）で、自分が実際に使った/試した体験として書いてください。"
+        "うまくいった話だけでなく、購入前に迷ったこと・失敗したこと・後悔したことも1つは必ず書き、"
+        "読者に語りかけるような口語的な文体にしてください（「〜なんですよね」「〜だったので正直焦りました」など）。"
+        "誇大な効能・断定的な医療/安全性の主張は避け、事実ベースで正直なレビューを書きます。"
         "PR記事であることが読者に明確にわかるよう、ステルスマーケティングにならない書き方をします。"
     )
 
-    user = f"""次のキーワードで、SEOを意識した日本語のアフィリエイト記事を書いてください。
+    user = f"""次のキーワードで、SEOを意識した日本語のアフィリエイト記事を、あなた自身の体験談として書いてください。
 
 キーワード: {keyword}
 
@@ -78,7 +84,7 @@ def build_prompt(config, products, keyword):
 {{
   "title": "記事タイトル（32文字前後、キーワードを含む）",
   "summary": "meta description用の100文字程度の要約",
-  "body_html": "記事本文のHTML断片（h2/h3, p, ul/li, strong を使う。<html><body>等の外枠タグは含めない。文字数の目安は1200〜1800字）",
+  "body_html": "記事本文のHTML断片（h2/h3, p, ul/li, strong を使う。<html><body>等の外枠タグは含めない。文字数の目安は1200〜1800字。冒頭は必ず1〜2文の個人的な導入から始める）",
   "used_product_ids": ["紹介に使ったproducts.jsonのid。使わなければ空配列"]
 }}
 
@@ -92,7 +98,7 @@ def call_claude(system, user):
     client = anthropic.Anthropic()
     resp = client.messages.create(
         model="claude-sonnet-4-6",
-       max_tokens=3000,
+        max_tokens=3000,
         system=system,
         messages=[{"role": "user", "content": user}],
     )
