@@ -14,8 +14,16 @@
 <main>
   <article class="post">
     <h1>{{ title }}</h1>
-    <p class="article-meta">{{ date }} 更新</p>
+    <p class="article-meta">{{ author_name }} / {{ date }} 更新</p>
     {{ body_html }}
+
+    <div class="author-signature">
+      <div class="author-emoji">{{ author_emoji }}</div>
+      <div>
+        <p class="author-name">{{ author_name }}</p>
+        <p class="author-bio">{{ author_bio }}</p>
+      </div>
+    </div>
 
     <p class="disclosure">
       本ページはアフィリエイトプログラムにより収益を得ています。商品紹介にはAmazon.co.jp等のアフィリエイトリンクを含みます。
